@@ -10,8 +10,6 @@ API_SEARCH_URL = "http://www.vam.ac.uk/api/json/museumobject/search?"
 API_IMAGE_URL = "http://media.vam.ac.uk/media/thira/collection_images/"
 API_RESULT_LIMIT = 45
 
-file_index = 1
-
 def user_input(results):
     print(str(results) + " results found.")
 
@@ -70,8 +68,6 @@ def records_from_data(data):
     for record in data['records']:
         fields = record['fields']
         if 'primary_image_id' in fields:
-            #image_id = fields['primary_image_id']
-            #image_ids.append(image_id)
             records.append(record)
 
     return records
@@ -112,14 +108,8 @@ def download_images(records):
     for record in records:
         fields = record['fields']
         image_id = fields['primary_image_id']
-        artist = fields['artist']
-        if artist is "" or not artist:
-            artist = "Unknown"
-        date_text = fields['date_text']
-        if date_text is "" or not date_text:
-            date_text = "Unknown"
         url = get_image_url(image_id)
-        filename = artist + "_" + date_text + "_" + image_id + ".jpg"
+        filename = image_id + ".jpg"
         if not os.path.isfile(filename):
             urllib.urlretrieve(url, filename)
             safe_image_info(record)
@@ -151,7 +141,7 @@ def Main():
     print("Processing " + str(results) + " entries:")
     print(str(processed) + "/" + str(results))
 
-    while int(processed) < results:
+    while processed < results:
         data = data_from_uri(uri)
         records = records_from_data(data)
         download_images(records)
