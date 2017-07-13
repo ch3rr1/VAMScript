@@ -15,7 +15,6 @@ def user_input(results):
 
     while True:
         answer = raw_input("Do you want to continue? [y/n]")
-
         if answer is "n":
             print("Bye!")
             exit()
@@ -42,7 +41,6 @@ def create_search_query(args):
     return query_string
 
 def create_search_uri(search_query):
-    
     limit = str(API_RESULT_LIMIT)
     uri = API_SEARCH_URL + search_query + "&limit=" + limit + "&offset=0"
     return uri
