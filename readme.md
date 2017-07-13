@@ -9,9 +9,9 @@ e.g.: `cd /path/to/script/`
 
 2. You can select from different search types:
    
-   -o (objectnamesearch) e.g. -o "teapot"
+   -o (objectnamesearch) e.g. `-o "teapot"`
    
-   -m (materialsearch) e.g. -m "Brass, Nickel, Silver alloy, Silver-gilt"
+   -m (materialsearch) e.g. `-m "Brass, Nickel, Silver alloy, Silver-gilt"`
 	
    Create your command: `./vam_script.py -o "teapot" -m "Brass, Nickel, Silver alloy, Silver-gilt"`
 
