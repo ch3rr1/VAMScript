@@ -21,14 +21,24 @@ def user_input(results):
         if answer is "y":
             break
 
+def format_search_string(string):
+    string = string.replace(" ", "+")
+    string = string.replace(",", "%2C")
+    return string
+
 def create_search_query(args):
     query = []
+    if args.query != "":
+        q = format_search_string(args.query)
+        query.append("q=" + q)
+    if args.namesearch != "":
+        namesearch = format_search_string(args.namesearch)
+        query.append("namesearch=" + namesearch)
     if args.objectnamesearch != "":
-        query.append("objectnamesearch=" + args.objectnamesearch)
+        objectnamesearch = format_search_string(args.objectnamesearch)
+        query.append("objectnamesearch=" + objectnamesearch)
     if args.materialsearch != "":
-        materialsearch = args.materialsearch
-        materialsearch = materialsearch.replace(" ", "+")
-        materialsearch = materialsearch.replace(",", "%2C")
+        materialsearch = format_search_string(args.materialsearch)
         query.append("materialsearch=" + materialsearch)
 
     query_string = ""
@@ -125,7 +135,9 @@ def Main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--directory', default='images', help='specify download directory')
-    parser.add_argument('-o', '--objectnamesearch', default='', help='specify search term e.g. teapots')
+    parser.add_argument('-q', '--query', default='', help='specify default search query')
+    parser.add_argument('-n', '--namesearch', default='', help='specify your name search')
+    parser.add_argument('-o', '--objectnamesearch', default='', help='specify object search term')
     parser.add_argument('-m', '--materialsearch', default='', help='specify material search')
     args = parser.parse_args()
 
