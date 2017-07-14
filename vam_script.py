@@ -40,6 +40,18 @@ def create_search_query(args):
     if args.materialsearch != "":
         materialsearch = format_search_string(args.materialsearch)
         query.append("materialsearch=" + materialsearch)
+    if args.placesearch != "":
+        placesearch = format_search_string(args.placesearch)
+        query.append("placesearch=" + placesearch)
+    if args.before != "":
+        before = args.before
+        query.append("before=" + before)
+    if args.after != "":
+        after = args.after
+        query.append("after=" + after)
+    if args.images != "1":
+        images = "0"
+        query.append("images=" + images)
 
     query_string = ""
     for element in query:
@@ -139,6 +151,10 @@ def Main():
     parser.add_argument('-n', '--namesearch', default='', help='specify your name search')
     parser.add_argument('-o', '--objectnamesearch', default='', help='specify object search term')
     parser.add_argument('-m', '--materialsearch', default='', help='specify material search')
+    parser.add_argument('-p', '--placesearch', default='', help='specify place search')
+    parser.add_argument('-b', '--before', default='', help='specify time search before')
+    parser.add_argument('-a', '--after', default='', help='specify time search after')
+    parser.add_argument('-i', '--images', default='1', help='specify if you want results without images')
     args = parser.parse_args()
 
     # create json request uri
