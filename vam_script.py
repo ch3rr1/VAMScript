@@ -76,6 +76,7 @@ def create_folder(directory):
     if not os.path.isdir(path):
         os.mkdir(directory)
     os.chdir(path)
+    os.mkdir("json")
 
 def get_image_url(name):
     url = API_IMAGE_URL
@@ -85,6 +86,7 @@ def get_image_url(name):
 
 def safe_image_info(record):
     fields = record['fields']
+    default = "Unknown"
     
     image_id = fields['primary_image_id'].encode('utf-8').strip()
     artist = fields['artist'].encode('utf-8').strip()
@@ -111,6 +113,12 @@ def download_images(records):
         if not os.path.isfile(filename):
             urllib.urlretrieve(url, filename)
             safe_image_info(record)
+
+def save_to_file(file_name, data):
+    file_name = "json/" + file_name
+    with open(file_name, "w") as json_file:
+        data = json.dumps(data, indent=4)
+        json_file.write(data)
 
 def Main():
     print("Running script...")
@@ -139,10 +147,17 @@ def Main():
     print("Processing " + str(results) + " entries:")
     print(str(processed) + "/" + str(results))
 
+    i = 1
     while processed < results:
+        print("Process images from: " + uri)
+
         data = data_from_uri(uri)
+        file_name = "vam_json_record_" + str(i) + ".json"
+        save_to_file(file_name, data)
+
         records = records_from_data(data)
         download_images(records)
+
         processed = processed + API_RESULT_LIMIT
         offset = processed
         uri = update_uri(uri, offset)
@@ -152,6 +167,8 @@ def Main():
             print(str(processed) + "/" + str(results))
         else:
             print(str(results) + "/" + str(results))
+
+        i = i + 1
 
     print("Found " + str(file_count) + " image files out of " + str(results) + " entries.")
     print("Finished.")
