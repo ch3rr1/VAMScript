@@ -98,7 +98,9 @@ def create_folder(directory):
     if not os.path.isdir(path):
         os.mkdir(directory)
     os.chdir(path)
-    os.mkdir("json")
+    path = path + '/json'
+    if not os.path.isdir(path):
+        os.mkdir("json")
 
 def get_image_url(name):
     url = API_IMAGE_URL
@@ -107,12 +109,15 @@ def get_image_url(name):
     return url
 
 def safe_image_info(record):
+    field_keys = ['primary_image_id', 'artist', 'date_text', 'object_number', 'object', 'place', 'title']
     fields = record['fields']
     default = "Unknown"
     
     image_id = fields['primary_image_id'].encode('utf-8').strip()
     artist = fields['artist'].encode('utf-8').strip()
-    date_text = fields['date_text'].encode('utf-8').strip()
+    # find better solution to check if keys exist
+    if 'date_text' in fields.keys():
+        date_text = fields['date_text'].encode('utf-8').strip()
     object_number = fields['object_number'].encode('utf-8').strip()
     object_name = fields['object'].encode('utf-8').strip()
     place = fields['place'].encode('utf-8').strip()
