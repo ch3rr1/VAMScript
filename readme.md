@@ -42,3 +42,4 @@ e.g.: `cd /path/to/script/`
 6. You can always type `./vam_script.py -h` for help.
 
 7. Questions? bastian@ch3rr1.me
+n test
